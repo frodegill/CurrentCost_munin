@@ -1,0 +1,27 @@
+#! /bin/sh
+#
+### BEGIN INIT INFO
+# Provides:          CurrentCost
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Coontrols the CurrentCost daemon
+### END INIT INFO
+
+case "$1" in
+    start)
+	/usr/local/bin/CC_server &
+	;;
+    stop)
+	pkill -TERM CC_server
+	;;
+    restart|force-reload)
+	pkill -TERM CC_server
+	/usr/local/bin/CC_server &
+	;;
+    *)
+	echo "Usage: /etc/init.d/CurrentCost {start|stop|restart}"
+	exit 1
+	;;
+esac
+
+exit 0

@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+
+if [ "$1" = "autoconf" ]; then
+	echo yes 
+	exit 0
+fi
+
+if [ "$1" = "config" ]; then
+
+	echo 'graph_title CurrentCost EnviR Energy Usage'
+	echo 'graph_args --base 1000 -l 0'
+	echo 'graph_vlabel sensor value'
+	echo 'graph_category currentcost'
+	echo 'graph_info This graph shows the values of sensors connected to a CurrentCost EnviR device.'
+	echo 'sensor0.label Sensor0'
+	echo 'sensor0.draw LINE2'
+	echo 'sensor0.info Watts.'
+	echo 'sensor1.label Underfloor Heating'
+	echo 'sensor1.draw LINE2'
+	echo 'sensor1.info Watts.'
+	echo 'sensor2.label Heat Pump'
+	echo 'sensor2.draw LINE2'
+	echo 'sensor2.info Watts.'
+	echo 'sensor3.label Cooler/Freezer'
+	echo 'sensor3.draw LINE2'
+	echo 'sensor3.info Watts.'
+	echo 'sensor4.label Washer/Dryer'
+	echo 'sensor4.draw LINE2'
+	echo 'sensor4.info Watts.'
+	echo 'sensor5.label Boiler'
+	echo 'sensor5.draw LINE2'
+	echo 'sensor5.info Watts.'
+	echo 'sensor6.label Sensor6'
+	echo 'sensor6.draw LINE2'
+	echo 'sensor6.info Watts.'
+	echo 'sensor7.label Sensor7'
+	echo 'sensor7.draw LINE2'
+	echo 'sensor7.info Watts.'
+	echo 'sensor8.label Sensor8'
+	echo 'sensor8.draw LINE2'
+	echo 'sensor8.info Watts.'
+	echo 'sensor9.label Sensor9'
+	echo 'sensor9.draw LINE2'
+	echo 'sensor9.info Watts.'
+	exit 0
+fi
+
+nc localhost 12286

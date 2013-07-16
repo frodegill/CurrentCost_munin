@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+
+if [ "$1" = "autoconf" ]; then
+	echo yes 
+	exit 0
+fi
+
+if [ "$1" = "config" ]; then
+
+	echo 'graph_title CurrentCost EnviR Temperature'
+	echo 'graph_args --base 1000 -l 0'
+	echo 'graph_vlabel sensor value'
+	echo 'graph_category currentcost'
+	echo 'graph_info This graph shows the values of sensors connected to a CurrentCost EnviR device.'
+	echo 'sensor.label Sensor'
+	echo 'sensor.draw LINE2'
+	echo 'sensor.info Degrees.'
+	exit 0
+fi
+
+nc localhost 12287

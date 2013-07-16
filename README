@@ -1,0 +1,25 @@
+CurrentCost_munin is server/client software I have written to be able to show the CurrentCost EnviR monitoring of our house' energy usage in Munin graphs. It depends on libxml2 and ctb (and uses netcat as client)
+
+Installing libxml2 is just a matter of "sudo apt-get install libxml2-dev".
+
+Ctb is a different case:
+First, download it from <URL: https://iftools.com/download/ctb/0.16/libctb-0.16.tar.gz >
+"gunzip libctb-0.16.tar.gz" to gunzip it.
+"tar xf libctb-0.16.tar" to untar it
+"cd libctb-0.16/samples/"
+add "#include "/usr/include/getopt.h"" at the top of the file ctbtest.cpp to be able to compile later on..
+"cd ../build/"
+add "-I../include/ctb-0.16/ -I/usr/include/" to CPPFLAGS in the file GNUmakefile
+"make -f GNUmakefile DEBUG=0 GPIB=0" to compile it. (And compile it one more time, with DEBUG=1, to be able to debug the application)
+"sudo make -f GNUmakefile DEBUG=0 GPIB=0 install" to install it. (And, once more, install it with DEBUG=1 to be able to link a debug version of the application) 
+"sudo cp ../include/ctb-0.16/kbhit.h /usr/local/include/ctb-0.16/" to install a header-file the ctb makefile seems to have forgotten..
+Finally "sudo ldconfig" to update the cache
+
+
+To compile CurrentCost server, just type "make && sudo make install". If you already have a server running, do a "sudo /etc/init.d/CurrentCost stop" before compiling, and a "sudo /etc/init.d/CurrentCost start" after.
+
+CurrentCost_munin is Public Domain (CCO)
+
+
+-- 
+Frode Roxrud Gill
