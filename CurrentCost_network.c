@@ -42,12 +42,20 @@ bool ExpandBuffer(char*& buf, size_t& buf_size, const size_t bytes_read)
 	return true;
 }
 
+void SendBuffer(int socket_fd, const char* buf, int len)
+{
+	int offset = 0;
+	do {
+		offset += send(socket_fd, buf+offset, len-offset, 0);
+	} while (offset<len);
+}
+
 void DumpMuninData(int socket_fd, bool is_watts)
 {
 	long start_of_munin_interval = time(NULL) - MUNIN_INTERVAL;
 	double watts;
-	double tmpr;
-	int count;
+	double tmpr, total_tmpr=0.0;
+	int count, total_tmpr_count=0;
 	MsgInfo* msg_iter;
 	int i;
 
@@ -71,27 +79,30 @@ void DumpMuninData(int socket_fd, bool is_watts)
 
 		if (0 < count)
 		{
-			watts = watts/count;
-			tmpr = tmpr/count;
+			watts /= count;
+			tmpr /= count;
 		}
 
 		if (is_watts)
 		{
 			sprintf(buf, "sensor%d.value %f\n", i, watts);
+			SendBuffer(socket_fd, buf, strlen(buf));
 		}
 		else
 		{
-			sprintf(buf, "sensor.value %f\n", tmpr);
+			total_tmpr += tmpr;
+			total_tmpr_count++;
 		}
+	}
 
-		int len = strlen(buf);
-		int offset = 0;
-		do {
-			offset += send(socket_fd, buf+offset, len-offset, 0);
-		} while (offset<len);
-
-		if (!is_watts && 0<count)
-			break; //We only have one temperature sensor - the one in the display unit itself. No need to report it for all sensors
+	if (!is_watts)
+	{
+		if (total_tmpr_count > 1)
+		{
+			total_tmpr /= total_tmpr_count;
+		}
+		sprintf(buf, "sensor.value %f\n", total_tmpr);
+		SendBuffer(socket_fd, buf, strlen(buf));
 	}
 }
 
