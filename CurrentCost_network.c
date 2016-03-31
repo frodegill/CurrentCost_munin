@@ -88,7 +88,7 @@ void DumpMuninData(int socket_fd, bool is_watts)
 			sprintf(buf, "sensor%d.value %f\n", i, watts);
 			SendBuffer(socket_fd, buf, strlen(buf));
 		}
-		else
+		else if (0.0 != tmpr)
 		{
 			total_tmpr += tmpr;
 			total_tmpr_count++;
